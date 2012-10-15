@@ -61,4 +61,3 @@ class FigletCommand(sublime_plugin.WindowCommand):
         view.sel().add(sublime.Region(cursor, cursor + len(text)))
 
         view.end_edit(edit)
-

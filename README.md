@@ -16,11 +16,11 @@ This Package adds two commands to the command palette:
 * `Figlet: Select ASCII Art Font` lets you choose a font out of the installed ones.
 
 
-`888'Y88 Y88b Y88     888   e88 88e   Y88b Y8P 888`
-`888 ,'Y  Y88b Y8     888  d888 888b   Y88b Y  888`
-`888C8   b Y88b Y     888 C8888 8888D   Y88b   "8"`
-`888 ",d 8b Y88b   e  88P  Y888 888P     888    e`
-`888,d88 88b Y88b "8",P'    "88 88"      888   "8"`
+        888'Y88 Y88b Y88     888   e88 88e   Y88b Y8P 888
+        888 ,'Y  Y88b Y8     888  d888 888b   Y88b Y  888
+        888C8   b Y88b Y     888 C8888 8888D   Y88b   "8"
+        888 ",d 8b Y88b   e  88P  Y888 888P     888    e
+        888,d88 88b Y88b "8",P'    "88 88"      888   "8"
 
 
 

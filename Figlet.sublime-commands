@@ -1,3 +1,4 @@
 [
-    { "caption": "Add Some Figlet ASCII Art Text", "command": "figlet" }
+    { "caption": "Figlet: Add Some ASCII Art Text", "command": "figlet" },
+    { "caption": "Figlet: Select ASCII Art Font", "command": "figlet_select_font" }
 ]

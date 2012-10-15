@@ -1,7 +1,7 @@
 SublimeFiglet
 =============
 
-Add in Big ASCII Lettering direct from the figlet[1] to Sublime Text[2].
+Add in Big ASCII Lettering direct from the Figlet [1] to Sublime Text [2].
 
 
 How to Use

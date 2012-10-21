@@ -41,11 +41,20 @@ class FigletSelectFontCommand(sublime_plugin.WindowCommand):
 
 class FigletCommand(sublime_plugin.WindowCommand):
     def run(self):
-        self.window.show_input_panel("Text to Figletize:", "",
-                                     self.on_done, None, None)
+        view = self.window.active_view()
+        if len(view.sel()) == 1 and view.sel()[0].size() > 0:
+            s = view.sel()[0]
+            text = view.substr(s)
+
+            edit = view.begin_edit()
+            view.erase(edit, s)
+            self.on_done(text, edit)
+        else:
+            self.window.show_input_panel("Text to Figletize:", "",
+                                         self.on_done, None, None)
         pass
 
-    def on_done(self, text):
+    def on_done(self, text, edit=None):
         if text == "":
             return
 
@@ -54,11 +63,13 @@ class FigletCommand(sublime_plugin.WindowCommand):
         # Put into view.
         view = self.window.active_view()
 
-        edit = view.begin_edit()
+        if edit is None:
+            edit = view.begin_edit()
 
         self.window.run_command('single_selection')
 
         cursor = view.sel()[0].a
+        text = text[:len(text) - 1]
         view.insert(edit, cursor, text)
 
         # Select
@@ -69,11 +80,20 @@ class FigletCommand(sublime_plugin.WindowCommand):
 
 class FigletPythonCommentCommand(sublime_plugin.WindowCommand):
     def run(self):
-        self.window.show_input_panel("Text to Figletize:", "",
-                                     self.on_done, None, None)
+        view = self.window.active_view()
+        if len(view.sel()) == 1 and view.sel()[0].size() > 0:
+            s = view.sel()[0]
+            text = view.substr(s)
+
+            edit = view.begin_edit()
+            view.erase(edit, s)
+            self.on_done(text, edit)
+        else:
+            self.window.show_input_panel("Text to Figletize:", "",
+                                         self.on_done, None, None)
         pass
 
-    def on_done(self, text):
+    def on_done(self, text, edit):
         if text == "":
             return
 
@@ -82,7 +102,8 @@ class FigletPythonCommentCommand(sublime_plugin.WindowCommand):
         # Put into view, with correct tabbing + one more, and commentize
         view = self.window.active_view()
 
-        edit = view.begin_edit()
+        if edit is None:
+            edit = view.begin_edit()
 
         self.window.run_command('single_selection')
 

@@ -39,7 +39,7 @@ class FigletSelectFontCommand(sublime_plugin.WindowCommand):
         settings.set("figlet_font", self.fonts[index])
 
 
-class FigletCommand(sublime_plugin.WindowCommand):
+class FigletTextCommand(sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
         if len(view.sel()) == 1 and view.sel()[0].size() > 0:
@@ -78,7 +78,7 @@ class FigletCommand(sublime_plugin.WindowCommand):
         view.end_edit(edit)
 
 
-class FigletPythonCommentCommand(sublime_plugin.WindowCommand):
+class FigletCommentCommand(sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
         if len(view.sel()) == 1 and view.sel()[0].size() > 0:
@@ -93,7 +93,7 @@ class FigletPythonCommentCommand(sublime_plugin.WindowCommand):
                                          self.on_done, None, None)
         pass
 
-    def on_done(self, text, edit):
+    def on_done(self, text, edit=None):
         if text == "":
             return
 
@@ -112,13 +112,13 @@ class FigletPythonCommentCommand(sublime_plugin.WindowCommand):
         prefix = view.substr(sublime.Region(current_line.a, cursor))
 
         text = text[:len(text) - 1]
-        text = '#\t' + text.replace("\n", "\n" + prefix + '#\t')
+        text = text.replace("\n", "\n" + prefix)
 
         view.insert(edit, cursor, text)
 
-        # view.sel().add(sublime.Region(cursor, cursor + len(text)))
+        view.sel().add(sublime.Region(cursor, cursor + len(text)))
 
         # self.window.run_command('split_selection_into_lines')
-        # self.window.run_command('toggle_comment', {'block': False})
+        self.window.run_command('toggle_comment', {'block': True})
 
         view.end_edit(edit)

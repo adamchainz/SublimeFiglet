@@ -14,6 +14,21 @@ def figlet_text(text):
     command = ['figlet']
     if font is not None:
         command.extend(['-f', font])
+
+    # Support Word Wrap settings in ST
+    view_settings = sublime.active_window().active_view().settings()
+    if view_settings.get('word_wrap') != True:
+        # It does not appear that there is a nice way of preventing line
+        # breaks in figlet.
+        command.extend(['-w', '10000'])
+    else:
+        output_width = view_settings.get('wrap_width')
+        if output_width == None or output_width == 0:
+            # Special case, word wrap 0 means window width.
+            command.extend(['-t'])
+        else:
+            command.extend(['-w', str(output_width)])
+
     command.append('%s' % text)
 
     # Get Text

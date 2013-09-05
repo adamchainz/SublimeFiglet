@@ -31,6 +31,10 @@ def figlet_text(text):
     fig = pyfiglet.Figlet(font=font, width=width)
     result = fig.renderText(text=text)
 
+    # Strip trailing whitespace, because why not?
+    if settings.get('figlet_no_trailing_spaces', True):
+        result = '\n'.join((line.rstrip() for line in result.split('\n')))
+
     return result
 
 

@@ -1,13 +1,11 @@
 SublimeFiglet
 =============
 
-Add in Big ASCII Lettering direct from the Figlet [1] to Sublime Text [2].
+A [Sublime Text][3] package to add in Big ASCII Lettering via [pyfiglet][2], a pure Python implementation of the original [Figlet][1] project.
 
 
 How to Use
 ==========
-
-You will need figlet installed on your system, e.g. on Ubuntu `sudo apt-get install figlet` or on Mac OS X `brew install figlet`.
 
 This Package adds two commands to the command palette:
 
@@ -27,7 +25,7 @@ This Package adds two commands to the command palette:
 License
 =======
 
-SublimeSuperMultiSelect is released under the MIT license.
+SublimeFiglet is released under the MIT license.
 
 Copyright (c) 2012 Adam Johnson <me@adamj.eu>
 
@@ -41,4 +39,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 [1]: http://www.figlet.org/
-[2]: http://www.sublimetext.com/2
+[2]: https://github.com/pwaller/pyfiglet
+[3]: http://www.sublimetext.com/2

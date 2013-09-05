@@ -21,6 +21,13 @@ This Package adds two commands to the command palette:
         888,d88 88b Y88b "8",P'    "88 88"      888   "8"
 
 
+How to Install
+==============
+
+If you don't have PackageControl, [go install it](https://sublime.wbond.net/installation) (and don't forget to restart Sublime.)
+
+Afterwards, go to Preferences->Package Control, pick "Install Package" from the menu, wait a second and type in "figlet" to find this package in the list. Press Enter to confirm installation. That's it!
+
 
 License
 =======

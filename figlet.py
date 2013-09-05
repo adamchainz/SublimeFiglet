@@ -1,35 +1,18 @@
 # coding=utf-8
-import os
-import sys
 import sublime
 import sublime_plugin
 
-try:
-    # Do we have the module?
-    import pyfiglet
-except ImportError:
-    # No? Ok, let's use our local one:
-    sys.path.append(os.path.abspath(__file__))
-    import pyfiglet
 
 
 def figlet_text(text):
-    # Get Font Setting
+    import pyfiglet
+
     settings = sublime.load_settings("Preferences.sublime-settings")
     font = settings.get('figlet_font', 'standard')
 
-    # Support Word Wrap settings in ST
-    view_settings = sublime.active_window().active_view().settings()
-    if view_settings.get('word_wrap') != True:
-        width = 10000
-    else:
-        output_width = view_settings.get('wrap_width')
-        if not output_width in (None, 0):
-            width = output_width
+    width = get_width()
 
-    # Get text
-    fig = pyfiglet.Figlet(font=font, width=width)
-    result = fig.renderText(text=text)
+    result = pyfiglet.Figlet(font=font, width=width).renderText(text=text)
 
     # Strip trailing whitespace, because why not?
     if settings.get('figlet_no_trailing_spaces', True):
@@ -38,8 +21,22 @@ def figlet_text(text):
     return result
 
 
+def get_width():
+    # Return width to wrap at (or large number if wrapping not enabled)
+    width = 1000000
+
+    view_settings = sublime.active_window().active_view().settings()
+    if view_settings.get('word_wrap'):
+        output_width = view_settings.get('wrap_width')
+        if output_width not in (None, 0):
+            width = output_width
+
+    return width
+
+
 class FigletSelectFontCommand(sublime_plugin.WindowCommand):
     def run(self):
+        import pyfiglet
         self.fonts = pyfiglet.FigletFont.getFonts()
         self.window.show_quick_panel(self.fonts, self.on_done)
 

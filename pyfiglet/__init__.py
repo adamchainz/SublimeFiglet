@@ -4,7 +4,7 @@
 Python FIGlet adaption
 """
 
-import pkg_resources
+import os
 import re
 import sys
 from optparse import OptionParser
@@ -87,18 +87,17 @@ class FigletFont(object):
         """
         for extension in ('tlf', 'flf'):
             fn = '%s.%s' % (font, extension)
-            if pkg_resources.resource_exists('pyfiglet.fonts', fn):
-                return pkg_resources.resource_string('pyfiglet.fonts', fn)
+            path = os.path.join( os.path.dirname(__file__), 'fonts', fn )
+            if os.path.exists(path):
+                with open(path, 'rb') as fontFile:
+                    return fontFile.read()
         else:
             raise FontNotFound(font)
 
     @classmethod
     def getFonts(cls):
-        return [font.rsplit('.', 2)[0] for font
-                in pkg_resources.resource_listdir('pyfiglet', 'fonts')
-                if font.endswith(('.flf', '.tlf'))
-                   and cls.reMagicNumber.search(pkg_resources.resource_stream(
-                        'pyfiglet.fonts', font).readline())]
+        fontsDir = os.path.join(os.path.dirname(__file__), 'fonts')
+        return [font.split('.')[0] for font in os.listdir(fontsDir) if font.endswith(('.flf','.tlf'))]
 
     @classmethod
     def infoFont(cls, font, short=False):
@@ -131,7 +130,7 @@ class FigletFont(object):
 
             header = self.reMagicNumber.sub('', header)
             header = header.split()
-            
+
             if len(header) < 6:
                 raise FontError('malformed header for %s' % self.font)
 
@@ -322,11 +321,11 @@ class FigletRenderingEngine(object):
             lineRight = curChar[row]
             if self.base.direction == 'right-to-left':
                 lineLeft, lineRight = lineRight, lineLeft
-            
+
             linebd = len(lineLeft.rstrip()) - 1
             if linebd < 0:
                 linebd = 0
-                
+
             if linebd < len(lineLeft):
                 ch1 = lineLeft[linebd]
             else:
@@ -430,7 +429,7 @@ class Figlet(object):
     def setFont(self, **kwargs):
         if kwargs.has_key('font'):
             self.font = kwargs['font']
-        
+
         self.Font = FigletFont(font=self.font)
 
     def getDirection(self):

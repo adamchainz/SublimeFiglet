@@ -1,17 +1,19 @@
 SublimeFiglet
 =============
 
-A [Sublime Text][3] package to add in Big ASCII Lettering via [pyfiglet][2], a pure Python implementation of the original [Figlet][1] project.
+A [Sublime Text][3] package to add in Big ASCII Lettering via [pyfiglet][2], a Python implementation of the original [Figlet][1] project.
 
 
 How to Use
 ==========
 
-This Package adds two commands to the command palette:
+This Package adds three commands to the command palette:
 
-* `Figlet: Add Some ASCII Art Text` lets you type text and get the output of figlet.
+* `Figlet: Add Text` lets you type text (or uses your selection) and figletizes it.
 
-* `Figlet: Select ASCII Art Font` lets you choose a font out of the installed ones.
+* `Figlet: Add Comment` lets you type text (or uses your selection) and figletizes it as a comment.
+
+* `Figlet: Select Font` lets you choose a font out of the installed list that come with pyfiglet.
 
 
         888'Y88 Y88b Y88     888   e88 88e   Y88b Y8P 888

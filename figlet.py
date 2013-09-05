@@ -1,52 +1,42 @@
 # coding=utf-8
 import os
-import subprocess
+import sys
 import sublime
 import sublime_plugin
+
+try:
+    # Do we have the module?
+    import pyfiglet
+except ImportError:
+    # No? Ok, let's use our local one:
+    sys.path.append(os.path.abspath(__file__))
+    import pyfiglet
 
 
 def figlet_text(text):
     # Get Font Setting
     settings = sublime.load_settings("Preferences.sublime-settings")
-    font = settings.get("figlet_font", None)
-
-    # Form Command
-    command = ['figlet']
-    if font is not None:
-        command.extend(['-f', font])
+    font = settings.get('figlet_font', 'standard')
 
     # Support Word Wrap settings in ST
     view_settings = sublime.active_window().active_view().settings()
     if view_settings.get('word_wrap') != True:
-        # It does not appear that there is a nice way of preventing line
-        # breaks in figlet.
-        command.extend(['-w', '10000'])
+        width = 10000
     else:
         output_width = view_settings.get('wrap_width')
-        if output_width == None or output_width == 0:
-            # Special case, word wrap 0 means window width.
-            command.extend(['-t'])
-        else:
-            command.extend(['-w', str(output_width)])
+        if not output_width in (None, 0):
+            width = output_width
 
-    command.append('%s' % text)
+    # Get text
+    fig = pyfiglet.Figlet(font=font, width=width)
+    result = fig.renderText(text=text)
 
-    # Get Text
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    return proc.communicate()[0]
+    return result
 
 
 class FigletSelectFontCommand(sublime_plugin.WindowCommand):
     def run(self):
-        proc = subprocess.Popen(['figlet', '-I', '2'], stdout=subprocess.PIPE)
-        fonts_dir = proc.communicate()[0]
-
-        print fonts_dir
-
-        # proc = subprocess.Popen(['ls', fonts_dir], stdout=subprocess.PIPE)
-        fonts = os.listdir(fonts_dir[:-1])
-        self.fonts = [f.split('.')[0] for f in fonts]
-
+        self.fonts = pyfiglet.FigletFont.getFonts()
         self.window.show_quick_panel(self.fonts, self.on_done)
 
     def on_done(self, index):

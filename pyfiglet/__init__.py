@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 """
 
 DEFAULT_FONT='standard'
-
+DIR_NAME=os.path.dirname(os.path.realpath(__file__))
 
 def figlet_format(text, font=DEFAULT_FONT, **kwargs):
     fig = Figlet(font)
@@ -87,7 +87,7 @@ class FigletFont(object):
         """
         for extension in ('tlf', 'flf'):
             fn = '%s.%s' % (font, extension)
-            path = os.path.join( os.path.dirname(__file__), 'fonts', fn )
+            path = os.path.join(DIR_NAME, 'fonts', fn )
             if os.path.exists(path):
                 with open(path, 'rb') as fontFile:
                     return fontFile.read()
@@ -96,7 +96,7 @@ class FigletFont(object):
 
     @classmethod
     def getFonts(cls):
-        fontsDir = os.path.join(os.path.dirname(__file__), 'fonts')
+        fontsDir = os.path.join(DIR_NAME, 'fonts')
         return [font.split('.')[0] for font in os.listdir(fontsDir) if font.endswith(('.flf','.tlf'))]
 
     @classmethod

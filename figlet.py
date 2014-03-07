@@ -5,7 +5,6 @@ import sublime_plugin
 import sys
 
 # Import from packages or locally.
-print sys.path
 try:
     import pyfiglet
 except ImportError:

@@ -4,13 +4,15 @@ import sublime
 import sublime_plugin
 import sys
 
-# Import from packages or locally.
 try:
-    import pyfiglet
+    from . import pyfiglet  # ST3
+except ValueError:
+    import pyfiglet  # ST2
 except ImportError:
     sys.path.append(os.path.abspath(__file__))
     import pyfiglet
 
+sys.modules['pyfiglet'] = pyfiglet  # Hack for pyfiglet pkg_resources
 
 def figlet_text(text):
     settings = sublime.load_settings("Preferences.sublime-settings")

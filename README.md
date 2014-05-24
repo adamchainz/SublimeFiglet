@@ -21,21 +21,9 @@ This Package adds three commands to the command palette:
 * `Figlet: Add Text` lets you type text (or uses your selection) and figletizes
   it.
 
-* `Figlet: Add Comment` lets you type text (or uses your selection) and
-  figletizes it as a comment.
-
 * `Figlet: Select Font` lets you choose a font out of the installed list that
   come with pyfiglet. See a list of the font styles at the [figlet font
   page](http://www.figlet.org/examples.html).
-
-
-          ::::::::::::::    :::::::::::::::::::::: :::   ::::::
-         :+:       :+:+:   :+:    :+:   :+:    :+::+:   :+::+:
-        +:+       :+:+:+  +:+    +:+   +:+    +:+ +:+ +:+ +:+
-       +#++:++#  +#+ +:+ +#+    +#+   +#+    +:+  +#++:  +#+
-      +#+       +#+  +#+#+#    +#+   +#+    +#+   +#+   +#+
-     #+#       #+#   #+#+##+# #+#   #+#    #+#   #+#
-    #############    #### #####     ########    ###   ###
 
 
 How to Install

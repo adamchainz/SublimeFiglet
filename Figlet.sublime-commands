@@ -1,5 +1,4 @@
 [
     { "caption": "Figlet: Add Text", "command": "figlet_text" },
-    { "caption": "Figlet: Add Comment", "command": "figlet_comment" },
     { "caption": "Figlet: Select Font", "command": "figlet_select_font" }
 ]

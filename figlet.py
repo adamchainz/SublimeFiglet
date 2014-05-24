@@ -14,6 +14,7 @@ except ImportError:
 
 sys.modules['pyfiglet'] = pyfiglet  # Hack for pyfiglet pkg_resources
 
+
 def figlet_text(text):
     settings = sublime.load_settings("Preferences.sublime-settings")
     font = settings.get('figlet_font', 'standard')
@@ -26,7 +27,7 @@ def figlet_text(text):
     if settings.get('figlet_no_trailing_spaces', True):
         result = '\n'.join((line.rstrip() for line in result.split('\n')))
 
-    return result
+    return result[:len(result) - 1]
 
 
 def get_width():
@@ -56,83 +57,33 @@ class FigletSelectFontCommand(sublime_plugin.WindowCommand):
 class FigletTextCommand(sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
-        if len(view.sel()) == 1 and view.sel()[0].size() > 0:
-            s = view.sel()[0]
-            text = view.substr(s)
-
-            edit = view.begin_edit()
-            view.erase(edit, s)
-            self.on_done(text, edit)
+        sel = view.sel()
+        if len(sel) == 1 and sel[0].size() > 0:
+            view.run_command('figlet_insert_text', {'text': None})
         else:
             self.window.show_input_panel("Text to Figletize:", "",
                                          self.on_done, None, None)
-        pass
 
-    def on_done(self, text, edit=None):
-        if text == "":
-            return
+    def on_done(self, text):
+        view = self.window.active_view()
+        view.run_command('figlet_insert_text', {'text': text})
+
+
+class FigletInsertTextCommand(sublime_plugin.TextCommand):
+    def run(self, edit, text=None):
+        view = self.view
+        sel = view.sel()
+
+        if text is None:  # ... then grab selection
+            if len(sel) != 1 or sel[0].size() == 0:
+                return
+            text = view.substr(sel[0])
+
+        cursor = min(sel[0].a, sel[0].b)
 
         text = figlet_text(text)
 
-        # Put into view.
-        view = self.window.active_view()
-
-        if edit is None:
-            edit = view.begin_edit()
-
-        self.window.run_command('single_selection')
-
-        cursor = view.sel()[0].a
-        text = text[:len(text) - 1]
+        view.erase(edit, sel[0])
         view.insert(edit, cursor, text)
-
-        # Select
-        view.sel().add(sublime.Region(cursor, cursor + len(text)))
-
-        view.end_edit(edit)
-
-
-class FigletCommentCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        view = self.window.active_view()
-        if len(view.sel()) == 1 and view.sel()[0].size() > 0:
-            s = view.sel()[0]
-            text = view.substr(s)
-
-            edit = view.begin_edit()
-            view.erase(edit, s)
-            self.on_done(text, edit)
-        else:
-            self.window.show_input_panel("Text to Figletize:", "",
-                                         self.on_done, None, None)
-        pass
-
-    def on_done(self, text, edit=None):
-        if text == "":
-            return
-
-        text = figlet_text(text)
-
-        # Put into view, with correct tabbing + one more, and commentize
-        view = self.window.active_view()
-
-        if edit is None:
-            edit = view.begin_edit()
-
-        self.window.run_command('single_selection')
-
-        cursor = view.sel()[0].a
-        current_line = view.line(cursor)
-        prefix = view.substr(sublime.Region(current_line.a, cursor))
-
-        text = text[:len(text) - 1]
-        text = text.replace("\n", "\n" + prefix)
-
-        view.insert(edit, cursor, text)
-
-        view.sel().add(sublime.Region(cursor, cursor + len(text)))
-
-        # self.window.run_command('split_selection_into_lines')
-        self.window.run_command('toggle_comment', {'block': True})
-
-        view.end_edit(edit)
+        sel.clear()
+        sel.add(sublime.Region(cursor, cursor + len(text)))

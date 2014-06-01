@@ -5,8 +5,8 @@ Python FIGlet adaption
 """
 
 from __future__ import print_function
-import pkg_resources
 import re
+import os
 import sys
 from optparse import OptionParser
 
@@ -32,6 +32,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 """
 
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+FONTS_PATH = os.path.join(BASE_PATH, 'fonts')
 
 DEFAULT_FONT='standard'
 
@@ -88,9 +90,9 @@ class FigletFont(object):
         Load font data if exist
         """
         for extension in ('tlf', 'flf'):
-            fn = '%s.%s' % (font, extension)
-            if pkg_resources.resource_exists('pyfiglet.fonts', fn):
-                data = pkg_resources.resource_string('pyfiglet.fonts', fn)
+            fn = os.path.join(FONTS_PATH, '%s.%s' % (font, extension))
+            if os.path.exists(fn):
+                data = open(fn, 'rb').read()
                 data = data.decode('ascii', 'replace')
                 return data
         else:
@@ -98,11 +100,14 @@ class FigletFont(object):
 
     @classmethod
     def getFonts(cls):
-        return [font.rsplit('.', 2)[0] for font
-                in pkg_resources.resource_listdir('pyfiglet', 'fonts')
-                if font.endswith(('.flf', '.tlf'))
-                   and cls.reMagicNumber.search(pkg_resources.resource_stream(
-                        'pyfiglet.fonts', font).readline().decode('ascii', 'replace'))]
+        return [
+            font.rsplit('.', 2)[0] for font
+            in os.listdir(FONTS_PATH)
+            if (font.endswith(('.flf', '.tlf')) and
+                cls.reMagicNumber.search(
+                    open(os.path.join(FONTS_PATH, font), 'rb').readline().decode('ascii', 'replace'))
+            )
+        ]
 
     @classmethod
     def infoFont(cls, font, short=False):

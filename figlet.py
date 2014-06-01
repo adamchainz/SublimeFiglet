@@ -5,7 +5,7 @@ import sublime_plugin
 import sys
 
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
-sys.path += [os.path.join(BASE_PATH, 'lib')]
+sys.path.append(BASE_PATH)
 
 
 def figlet_text(text):

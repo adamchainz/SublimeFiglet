@@ -27,6 +27,20 @@ This Package adds three commands to the command palette:
   come with pyfiglet. See a list of the font styles at the [figlet font
   page](http://www.figlet.org/examples.html).
 
+* `Figlet: Add Framed Comment` acts the same as `Figlet: Add Text` but adds an
+  extra frame around the text using the current language's comment characters
+  to make it stand out. For example in Python this looks like:
+
+```
+#######################################################
+#        _                        _             _     #
+#       / \   _ __ ___   __ _ ___(_)_ __   __ _| |    #
+#      / _ \ | '_ ` _ \ / _` |_  / | '_ \ / _` | |    #
+#     / ___ \| | | | | | (_| |/ /| | | | | (_| |_|    #
+#    /_/   \_\_| |_| |_|\__,_/___|_|_| |_|\__, (_)    #
+#                                         |___/       #
+#######################################################
+```
 
 Installation
 ============

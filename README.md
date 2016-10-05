@@ -19,7 +19,9 @@ How to Use
 This Package adds three commands to the command palette:
 
 * `Figlet: Add Text` lets you type text (or uses your selection) and figletizes
-  it.
+  it. The output is left selected so you can edit it, for example you can
+  convert it to comments in the current language it with the 'Toggle Comment'
+  or 'Toggle Block Comment' commands (`cmd-/` / `cmd-alt-/` on Mac).
 
 * `Figlet: Select Font` lets you choose a font out of the installed list that
   come with pyfiglet. See a list of the font styles at the [figlet font

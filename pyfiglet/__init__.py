@@ -8,7 +8,6 @@ Python FIGlet adaption
 from __future__ import print_function, unicode_literals
 
 import os
-import pkg_resources
 import re
 import shutil
 import sys
@@ -45,6 +44,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+FONTS_PATH = os.path.join(BASE_PATH, 'fonts')
 
 DEFAULT_FONT = 'standard'
 
@@ -132,11 +133,12 @@ class FigletFont(object):
         Load font data if exist
         """
         for extension in ('tlf', 'flf'):
-            fn = '%s.%s' % (font, extension)
-            if pkg_resources.resource_exists('pyfiglet.fonts', fn):
-                data = pkg_resources.resource_string('pyfiglet.fonts', fn)
-                data = data.decode('UTF-8', 'replace')
-                return data
+            fn = os.path.join(FONTS_PATH, '%s.%s' % (font, extension))
+            if os.path.exists(fn):
+                with open(fn, 'rb') as fp:
+                    data = fp.read()
+                    data = data.decode('UTF-8', 'replace')
+                    return data
             else:
                 for location in ("./", SHARED_DIRECTORY):
                     full_name = os.path.join(location, fn)
@@ -157,14 +159,14 @@ class FigletFont(object):
         elif os.path.isfile(full_file):
             f = open(full_file, 'rb')
         else:
-            f = pkg_resources.resource_stream('pyfiglet.fonts', font)
+            f = open(os.path.join(FONTS_PATH, font), 'rb')
         header = f.readline().decode('UTF-8', 'replace')
         f.close()
         return cls.reMagicNumber.search(header)
 
     @classmethod
     def getFonts(cls):
-        all_files = pkg_resources.resource_listdir('pyfiglet', 'fonts')
+        all_files = os.listdir(FONTS_PATH)
         if os.path.isdir(SHARED_DIRECTORY):
              all_files += os.listdir(SHARED_DIRECTORY)
         return [font.rsplit('.', 2)[0] for font
